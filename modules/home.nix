@@ -1,5 +1,5 @@
 { nixpkgs, home-manager, ... }:
-{ pkgs, ... }:
+{ config, pkgs, ... }:
 {
   home = {
     extraDependencies = [ pkgs.stdenv ];
@@ -16,6 +16,7 @@
     };
     shellAliases = {
       diff = "diff --color=auto";
+      dotfiles = with config.home; "git --git-dir=${homeDirectory}/.dotfiles --work-tree=${homeDirectory}";
       grep = "grep --color=auto";
       la = "ls -a";
       ll = "ls -al";
