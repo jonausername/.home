@@ -1,0 +1,74 @@
+{ lib, ... }:
+{
+  programs.bash = {
+    enable = true;
+    historyControl = [ "erasedups" "ignoredups" ];
+    historyFileSize = -1;
+    historySize = -1;
+    initExtra = lib.mkMerge [
+      (lib.mkOrder 50 ''
+        printf '\e]0;%s\007' "''${PWD/#$HOME/\~}"
+        declare -ax PROMPT_COMMAND=()
+      '')
+      (lib.mkOrder 3000 ''
+        _set_prompt_contents() {
+          PS1="\[\033[1;$((UID ? 32 : 31))m\]\\$"
+          ((SHLVL - 1)) && PS1="$PS1\[\033[22;37m\]+"
+          ((DIRENV_ACTIVE)) && PS1="$PS1\[\033[22;37m\]*"
+          PS1="$PS1 "
+
+          local git_dir
+          if git_dir="$(git rev-parse --show-toplevel 2>/dev/null)"; then
+            local git_branch="$(git branch --show-current 2>/dev/null)"
+            PS1="$PS1\[\033[1;37m\]''${PWD/#''${git_dir%/*}/…} "
+            PS1="$PS1\[\033[1;35m\]$git_branch "
+          else
+            PS1="$PS1\[\033[1;37m\]\w "
+          fi
+
+          local exit_status_indicator="\[\033[22;$((previous_exit_status ? 31 : 90))m\]•"
+          PS1="$PS1$exit_status_indicator \[\033[0m\]"
+          PS2="$exit_status_indicator \[\033[0m\]"
+        }
+
+        _osc7_cwd() {
+          local strlen=''${#PWD}
+          local encoded=""
+          local pos c o
+          for (( pos=0; pos<strlen; pos++ )); do
+            c=''${PWD:$pos:1}
+            case "$c" in
+              [-/:_.!\'\(\)~[:alnum:]]) o="$c" ;;
+              *) printf -v o '%%%02X' "'$c" ;;
+            esac
+            encoded+="$o"
+          done
+          printf '\e]7;file://%s%s\e\\' "$HOSTNAME" "$encoded"
+        }
+
+        _prompt_hook() {
+          local previous_exit_status=$?
+          history -a
+          _set_prompt_contents
+          PS1+="\[\e]0;\w\a\]"
+          _osc7_cwd
+          PS0+='\e]133;C\e\\'
+          printf '\e]133;A\e\\\e]133;D\e\\'
+          return $previous_exit_status
+        }
+
+        PROMPT_COMMAND=("''${PROMPT_COMMAND[@]}" _prompt_hook)
+
+        _debug_set_title() {
+          if [[ "$BASH_COMMAND" != _* ]]; then
+            printf '\e]0;%s `%s`\007' "''${PWD/#$HOME/\~}" "$BASH_COMMAND"
+          else
+            printf '\e]0;%s\007' "''${PWD/#$HOME/\~}"
+          fi
+        }
+
+        trap _debug_set_title DEBUG
+      '')
+    ];
+  };
+}

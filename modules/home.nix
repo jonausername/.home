@@ -1,0 +1,94 @@
+{ nixpkgs, home-manager, ... }:
+{ pkgs, ... }:
+{
+  home = {
+    extraDependencies = [ pkgs.stdenv ];
+    language.collate = "C.UTF-8";
+    packages = with pkgs; [
+      nix
+      spotify
+      tree
+      wl-clipboard
+    ];
+    sessionVariables = {
+      EDITOR = "hx";
+      TERMINAL = "foot";
+    };
+    shellAliases = {
+      diff = "diff --color=auto";
+      grep = "grep --color=auto";
+      la = "ls -a";
+      ll = "ls -al";
+      ls = "ls --color=auto --human-readable";
+      neofetch = "fastfetch";
+    };
+  };
+
+  nix = {
+    package = pkgs.nix;
+    channels = { inherit nixpkgs; };
+    gc = {
+      automatic = true;
+      dates = "weekly";
+      options = "--delete-older-than 7d";
+    };
+    registry.nixpkgs.to = {
+      type = "path";
+      path = "${nixpkgs}";
+    };
+    settings = {
+      experimental-features = [ "nix-command" "flakes" ];
+      flake-registry = "";
+    };
+  };
+
+  nixpkgs.config.allowUnfree = true;
+
+  programs = {
+    dircolors.enable = true;
+    direnv = {
+      enable = true;
+      nix-direnv.enable = true;
+      stdlib = ''
+        export DIRENV_ACTIVE=1
+      '';
+    };
+    discord.enable = true;
+    fastfetch.enable = true;
+    home-manager = {
+      enable = true;
+      path = "${home-manager}";
+    };
+    htop.enable = true;
+    jq.enable = true;
+    less = {
+      enable = true;
+      options = {
+        ignore-case = true;
+        incsearch = true;
+        search-options = "W";
+        RAW-CONTROL-CHARS = true;
+      };
+    };
+    readline = {
+      enable = true;
+      variables = {
+        completion-ignore-case = true;
+        skip-completed-text = true;
+      };
+    };
+    ripgrep.enable = true;
+  };
+
+  services.wl-clip-persist.enable = true;
+
+  targets.genericLinux.enable = true;
+
+  xdg = {
+    enable = true;
+    terminal-exec = {
+      enable = true;
+      settings.default = [ "foot.desktop" ];
+    };
+  };
+}
