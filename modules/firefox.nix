@@ -112,6 +112,10 @@
         "accessibility.typeaheadfind.enablesound" = false;
         "browser.aboutConfig.showWarning" = false;
         "browser.eme.ui.enabled" = true;
+        "browser.ml.enable" = false;
+        "browser.ml.linkPreview.enabled" = false;
+        "browser.ml.pageAssist.enabled" = false;
+        "browser.ml.smartAssist.enabled" = false;
         "browser.preferences.moreFromMozilla" = false;
         "browser.quitShortcut.disabled" = true;
         "browser.sessionstore.resume_from_crash" = false;
