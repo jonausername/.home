@@ -1,5 +1,12 @@
-{ lib, ... }:
-{
+{ lib, pkgs, ... }:
+let
+  complete-alias = pkgs.fetchFromGitHub {
+    owner = "cykerway";
+    repo = "complete-alias";
+    rev = "7f2555c2fe7a1f248ed2d4301e46c8eebcbbc4e2";
+    hash = "sha256-yohvfmfUbjGkIoX4GF8pBH+7gGRzFkyx0WXOlj+Neag=";
+  };
+in {
   programs.bash = {
     enable = true;
     historyControl = [ "erasedups" "ignoredups" ];
@@ -11,6 +18,9 @@
         declare -ax PROMPT_COMMAND=()
       '')
       (lib.mkOrder 3000 ''
+        . ${complete-alias}/complete_alias
+        complete -F _complete_alias "''${!BASH_ALIASES[@]}"
+
         _set_prompt_contents() {
           PS1="\[\033[1;$((UID ? 32 : 31))m\]\\$"
           ((SHLVL - 1)) && PS1="$PS1\[\033[22;37m\]+"
