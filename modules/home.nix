@@ -81,7 +81,11 @@
     ripgrep.enable = true;
   };
 
-  services.wl-clip-persist.enable = true;
+  services = {
+    gnome-keyring.enable = true;
+    ssh-agent.enable = true;
+    wl-clip-persist.enable = true;
+  };
 
   targets.genericLinux.enable = true;
 
