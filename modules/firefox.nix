@@ -11,7 +11,7 @@
       DisableSetDesktopBackground = true;
       DisableTelemetry = true;
       DisplayBookmarksToolbar = "never";
-      DisplayMenuBar = "default-off";
+      DisplayMenuBar = "never";
       DNSOverHTTPS = {
         Enabled = true;
         Fallback = false;
