@@ -53,8 +53,6 @@
         "terminal.integrated.stickyScroll.enabled" = false;
         "update.mode" = "none";
         "update.showReleaseNotes" = false;
-        "window.customTitleBarVisibility" = "never";
-        "window.titleBarStyle" = "native";
         "workbench.colorCustomizations" = {
           "[Iceberg]" = {
             "editorBracketMatch.background" = "#3e445e";
