@@ -18,7 +18,7 @@ in {
         declare -ax PROMPT_COMMAND=()
       '')
       (lib.mkOrder 3000 ''
-        . ${complete-alias}/complete_alias
+        . "${complete-alias}/complete_alias"
         complete -F _complete_alias "''${!BASH_ALIASES[@]}"
 
         _set_prompt_contents() {
@@ -60,7 +60,7 @@ in {
           local previous_exit_status=$?
           history -a
           _set_prompt_contents
-          PS1+="\[\e]0;\w\a\]"
+          PS1+='\[\e]0;\w\a\]'
           _osc7_cwd
           PS0+='\e]133;C\e\\'
           printf '\e]133;A\e\\\e]133;D\e\\'
