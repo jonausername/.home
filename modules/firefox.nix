@@ -117,7 +117,6 @@
         "browser.ml.pageAssist.enabled" = false;
         "browser.ml.smartAssist.enabled" = false;
         "browser.preferences.moreFromMozilla" = false;
-        "browser.quitShortcut.disabled" = true;
         "browser.sessionstore.resume_from_crash" = false;
         "browser.startup.couldRestoreSession.count" = 0;
         "browser.tabs.inTitlebar" = 1;
@@ -128,6 +127,8 @@
         "browser.urlbar.suggest.recentsearches" = false;
         "browser.urlbar.suggest.topsites" = false;
         "browser.urlbar.suggest.trending" = false;
+        "browser.warnOnQuit" = false;
+        "browser.warnOnQuitShortcut" = false;
         "extensions.activeThemeID" = "{11987003-9435-4f9d-919e-8720ebb6a64b}";
         "findbar.highlightAll" = true;
         "font.default.x-western" = "sans-serif";
